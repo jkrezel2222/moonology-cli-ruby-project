@@ -9,7 +9,13 @@ parser = OptionParser.new do |opt|
 
     opt.on("-s", "--single", "Will return the moon phase on a single date") do |single|
         options[:single] = single
-        puts "working"
+        
+        APIClient.get_moon_phase(options[:date]) do
+ 
+            # add in argument here
+
+        puts "The moon phase is #{show_phase}"
+        end
     end
 
     opt.on("-r", "--range", "Will return the moon phases within a date range") do |range|
@@ -25,9 +31,8 @@ parser = OptionParser.new do |opt|
     end
 
     # make date a required option
-    opt.on("-d", "--date=DATE", "Specifify the date in dd-mm-yyyy format", String) do |date_string|
-        options[:date] = date_string
-        # add in argument here
+    opt.on("-d", "--date=date_string", "Specifify the date in yyyy,mm,dd format", String) do |date|
+        options[:date] = date
     end
 
     # make a date range a required option
@@ -57,6 +62,7 @@ begin
 
         # *********** add in here code to call the api for the single date response ***********
         # *********** add in here code to change the date string to unix datetime stamp format ***********
+
 
     elsif !options[:range].nil?
         if options.key?(:single) || options.key?(:name) || options.key?(:distance)

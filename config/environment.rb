@@ -1,5 +1,6 @@
 require "open-uri"
 require "uri"
+require "net/http"
 require "json"
 require "optparse"
 require "date"
