@@ -9,13 +9,6 @@ parser = OptionParser.new do |opt|
 
     opt.on("-s", "--single", "Will return the moon phase on a single date") do |single|
         options[:single] = single
-        
-        APIClient.get_moon_phase(options[:date]) do
- 
-            # add in argument here
-
-        puts "The moon phase is #{show_phase}"
-        end
     end
 
     opt.on("-r", "--range", "Will return the moon phases within a date range") do |range|
@@ -31,12 +24,12 @@ parser = OptionParser.new do |opt|
     end
 
     # make date a required option
-    opt.on("-d", "--date=date_string", "Specifify the date in yyyy,mm,dd format", String) do |date|
+    opt.on("-d", "--date=DATE", "Specifify the date in yyyy,mm,dd format", String) do |date|
         options[:date] = date
     end
 
     # make a date range a required option
-    opt.on("-b", "--between=BETWEEN", "Specifify the date range in dd-mm-yyyy - dd-mm-yyyy format", String) do |date_string|
+    opt.on("-b", "--between=BETWEEN", "Specifify the date range in dd-mm-yyyy - dd-mm-yyyy format", String) do |between_string|
         options[:between] = between_string
         # add in argument here
     end
@@ -57,12 +50,16 @@ begin
         end
 
         if options[:date].nil?
-            raise OptionParser::MissingArgument.new("You must type in a single date")
+            raise OptionParser::MissingArgument.new("You must type in a single date in yyyy,mm,dd format")
         end
 
-        # *********** add in here code to call the api for the single date response ***********
-        # *********** add in here code to change the date string to unix datetime stamp format ***********
-
+        moonphase = APIClient.get_moon_phase(options[:date])
+        moonphase.each do |a|
+            phase = a["Phase"]
+            moon = a["Moon"]
+            puts moon
+            puts "#{phase} phase"
+        end
 
     elsif !options[:range].nil?
         if options.key?(:single) || options.key?(:name) || options.key?(:distance)
