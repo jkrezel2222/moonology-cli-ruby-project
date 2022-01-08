@@ -5,7 +5,7 @@ require_relative "../config/environment.rb"
 options = {}
 
 parser = OptionParser.new do |opt|
-    opt.banner = "Moonology: the moon phase application. Here's how to use it [options]"
+    opt.banner = "Moonology: the moon phase application. Here's how to use it [options]".colorize(:color => :white, :background => :cyan)
 
     opt.on("-s", "--single", "Will return the moon phase on a single date") do |single|
         options[:single] = single
@@ -19,19 +19,17 @@ parser = OptionParser.new do |opt|
         options[:name] = name
     end
 
-    opt.on("-x", "--distance", "Will return the distance of the moon to the earth on a single date") do |distance|
+    opt.on("-x", "--distance", "Will return the distance of the moon to the Earth on a single date") do |distance|
         options[:distance] = distance
     end
 
-    # make date a required option
-    opt.on("-d", "--date=DATE", "*** Specifify the date e.g. 2021-12-21 ***") do |date_string|
-        options[:date] = date_string
+    opt.on("-y", "--sun_distance", "Will return the distance of the moon to the Sun on a single date") do |sun_distance|
+        options[:sun_distance] = sun_distance
     end
 
-    # make a date range a required option
-    opt.on("-b", "--between=BETWEEN", "*** Specifify the date range in yyyy,dd,mm yyyy,dd,mm yyyy,dd,mm format ***") do |between_string|
-        options[:between] = between_string
-        # add in argument here
+    # make date a required option
+    opt.on("-d", "--date=DATE", "*** Required, specifify the date e.g. 2021-12-21 ***") do |date_string|
+        options[:date] = date_string
     end
 
     # including a help option
@@ -45,12 +43,12 @@ begin
     parser.parse!
 
     if !options[:single].nil?
-        if options.key?(:range) || options.key?(:name) || options.key?(:distance)
+        if options.key?(:sun_distance) || options.key?(:name) || options.key?(:distance)
             raise OptionParser::InvalidArgument.new("Range, name or distance options cannot go with single date option.")
         end
 
         if options[:date].nil?
-            raise OptionParser::MissingArgument.new("You must type in a single date in yyyy,mm,dd format")
+            raise OptionParser::MissingArgument.new("You must type in a single date in yyyy-mm-dd format")
         end
 
         moonphase = APIClient.get_moon_phase(options[:date])
@@ -62,27 +60,27 @@ begin
             puts "#{phase}"
         end
 
-    elsif !options[:range].nil?
+    elsif !options[:sun_distance].nil?
         if options.key?(:single) || options.key?(:name) || options.key?(:distance)
-            raise OptionParser::InvalidArgument.new("Single, name or distance options cannot go with date range option.")
+            raise OptionParser::InvalidArgument.new("Single, name or distance options cannot go with sun-distance option.")
         end
 
-        if options[:between].nil?
-            raise OptionParser::MissingArgument.new("Type in a date range in yyyy,mm,dd yyyy,mm,dd yyyy,mm,dd format")
+        if options[:date].nil?
+            raise OptionParser::MissingArgument.new("You must type in a single date in yyyy-mm-dd format")
         end
 
-        # *********** add in here code to call the api for the range date response ***********
-        # moonphase = APIClient.get_multiple_phases(options[:range])
-        # moonphase.each do |a|
-        #     phase = a["Phase"]
-        #     moon = a["Moon"]
-        #     puts moon
-        #     puts "#{phase} phase"
-        # end
+        moonphase = APIClient.get_moon_phase(options[:date])
+        moonphase.each do |a|
+            moon = a["Moon"]
+            sun_distance = a["DistanceToSun"]
+            puts moon
+            puts "The distance to the Sun is:"
+            puts "#{sun_distance}"
+        end
 
     elsif !options[:name].nil?
-        if options.key?(:single) || options.key?(:range) || options.key?(:distance)
-            raise OptionParser::InvalidArgument.new("Single, date range or distance options cannot go with name option.")
+        if options.key?(:single) || options.key?(:sun_distance) || options.key?(:distance)
+            raise OptionParser::InvalidArgument.new("Single, sun-distance or distance options cannot go with name option.")
         end
 
         if options[:date].nil?
@@ -97,8 +95,8 @@ begin
         end
     
     elsif !options[:distance].nil?
-        if options.key?(:single) || options.key?(:range) || options.key?(:name)
-            raise OptionParser::InvalidArgument.new("Single, date range or name options cannot go with distance option.")
+        if options.key?(:single) || options.key?(:sun_distance) || options.key?(:name)
+            raise OptionParser::InvalidArgument.new("Single, sun-distance or name options cannot go with distance option.")
         end
 
         if options[:date].nil?
