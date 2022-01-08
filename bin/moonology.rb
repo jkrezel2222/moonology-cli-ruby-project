@@ -11,10 +11,6 @@ parser = OptionParser.new do |opt|
         options[:single] = single
     end
 
-    opt.on("-r", "--range", "Will return the moon phases within a date range") do |range|
-        options[:range] = range
-    end
-
     opt.on("-n", "--name", "Will return the corresponding moon name on a single date e.g. 2021-12-21") do |name|
         options[:name] = name
     end
@@ -44,7 +40,7 @@ begin
 
     if !options[:single].nil?
         if options.key?(:sun_distance) || options.key?(:name) || options.key?(:distance)
-            raise OptionParser::InvalidArgument.new("Range, name or distance options cannot go with single date option.")
+            raise OptionParser::InvalidArgument.new("Name or distance or sun-distance options cannot go with single date option.")
         end
 
         if options[:date].nil?

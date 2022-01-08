@@ -7,6 +7,4 @@ require "date"
 require "time"
 require "colorize"
 
-
-require_relative "../model/phase.rb"
 require_relative "../lib/api-client.rb"

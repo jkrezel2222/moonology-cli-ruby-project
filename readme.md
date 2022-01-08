@@ -1,31 +1,34 @@
 # Moon phases CLI application
-Name of the app is called moonology
+This app is called moonology and will provide you with information about the moon on a specific date.
 
-## return a single date moon phase
+### Features
+* Return a single date moon phase
 
-## return a range of dates and corresponding moon phases
+* Return the corresponding moon name, eg “Harvest Moon”
 
-## return the corresponding moon name, eg “Harvest Moon”
+* Return the distance of the moon from the Earth
 
-## return the distance of the moon from the earth
+* Return the distance of the moon from the Sun
 
-## help
+* Help
 
-## Setup
+### Setup
+Fork and clone this github repository to run the app
 
-## Examples
 
-`moonology.rb --single --date 21-12-2021`
-`moonology.rb -s -d 21-12-2021`
+### Examples
 
-`moonology.rb --range --date-range 21-12-21 - 30-12-2021`
-`moonology.rb -r -dr 21-12-21 - 30-12-2021`
+`moonology.rb --single --date 2021-12-21`
+`moonology.rb -s -d 2021-12-21`
 
-`moonology.rb --name --date 21-12-2021`
-`moonology.rb -n -d 21-12-2021`
+`moonology.rb --name --date 2021-12-21`
+`moonology.rb -n -d 2021-12-21`
 
-`moonology.rb --distance --date 21-12-2021`
-`moonology.rb -di -d 21-12-2021`
+`moonology.rb --distance --date 2021-12-21`
+`moonology.rb -x -d 2021-12-21`
+
+`moonology.rb --sun-distance --date 2021-12-21`
+`moonology.rb -y -d 2021-12-21`
 
 `moonology.rb --help`
 `moonology.rb -h`
