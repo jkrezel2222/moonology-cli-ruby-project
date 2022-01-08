@@ -80,7 +80,7 @@ begin
         end
 
         if options[:date].nil?
-            raise OptionParser::MissingArgument.new("You must type in a single date in yyyy,mm,dd format")
+            raise OptionParser::MissingArgument.new("You must type in a single date in yyyy-mm-dd format")
         end
 
         moonphase = APIClient.get_moon_phase(options[:date])
@@ -96,7 +96,7 @@ begin
         end
 
         if options[:date].nil?
-            raise OptionParser::MissingArgument.new("You must type in a single date in yyyy,mm,dd format")
+            raise OptionParser::MissingArgument.new("You must type in a single date in yyyy-mm-dd format")
         end
 
         moonphase = APIClient.get_moon_phase(options[:date])
